@@ -11,6 +11,15 @@ class ToolsScreen extends StatefulWidget {
 }
 
 class _ToolsScreenState extends State<ToolsScreen> {
+  static final Map<String, WidgetBuilder> _toolRoutes = {
+    'Merge PDF': (_) => const MergePdfScreen(),
+    'Split PDF': (_) => const SplitPdfScreen(),
+    'Compress PDF': (_) => const CompressPdfScreen(),
+    'Rotate PDF': (_) => const RotatePdfScreen(),
+    'PDF to Word': (_) => const PdfToWordScreen(),
+    'Protect PDF': (_) => const ProtectPdfScreen(),
+  };
+
   static const List<String> _categories = [
     'All',
     'Essential',
@@ -134,37 +143,13 @@ class _ToolsScreenState extends State<ToolsScreen> {
               _ToolsListSection(
                 tools: _filteredTools,
                 onToolTap: (tool) {
-                  switch (tool.title) {
-                    case 'Merge PDF':
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const MergePdfScreen(),
-                        ),
-                      );
-                      break;
-                    case 'Split PDF':
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const SplitPdfScreen(),
-                        ),
-                      );
-                      break;
-                    case 'Compress PDF':
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const CompressPdfScreen(),
-                        ),
-                      );
-                      break;
-                    case 'Rotate PDF':
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => const RotatePdfScreen(),
-                        ),
-                      );
-                      break;
-                    default:
-                      showAppSnackBar(context, '${tool.title} dipilih.');
+                  final routeBuilder = _toolRoutes[tool.title];
+                  if (routeBuilder != null) {
+                    Navigator.of(
+                      context,
+                    ).push(MaterialPageRoute(builder: routeBuilder));
+                  } else {
+                    showAppSnackBar(context, '${tool.title} dipilih.');
                   }
                 },
               ),
